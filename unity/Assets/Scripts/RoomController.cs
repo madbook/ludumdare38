@@ -11,28 +11,22 @@ public class RoomController : MonoBehaviour {
 	void OnMouseDown() {
 		//gameObject.SetActive(false);
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position);
-		this.towerController.Log();
-		this.FocusRoom();
+		this.towerController.FocusRoom(floor, face, position);
+		//this.FocusRoom();
 	}
 
-	void FocusRoom(){
+	public void FocusRoom(){
     	Renderer[] children = transform.GetComponentsInChildren<Renderer>();
     	foreach ( Renderer  rend  in children) {
             rend.material.color = new Color (1,0,0,0);
 		}
 	}
 
-	void UnFocusRoom(){
+	public void UnFocusRoom(){
     	Renderer[] children = transform.GetComponentsInChildren<Renderer>();
 
     	foreach ( Renderer  rend  in children) {
             rend.material.color = new Color (1,1,1,1);
-		}
-	}
-
-	void Update() {
-		if(Random.Range(0,100) == 0) {
-			this.UnFocusRoom();
 		}
 	}
 }

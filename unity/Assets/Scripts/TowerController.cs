@@ -5,11 +5,13 @@ public class TowerController : MonoBehaviour {
 	public GameObject roomTemplate;
 	public int numFloors = 4;
 	public int numRoomsPerFloor = 3;
+	public int numFaces = 4;
 
-	public static float hope = 0;
-	public static float chaos = 0;
+	public float hope = 0;
+	public float chaos = 0;
 
 	RoomController[] rooms;
+	RoomController focusedRoom;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +24,20 @@ public class TowerController : MonoBehaviour {
 		);
 	}
 	
+	RoomController GetRoomByFloorFacePosition(int floor, int face, int position) {
+		Debug.Log(floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position);
+		return rooms[floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position];
+	}
+
+	public void FocusRoom (int floor, int face, int position) {
+		RoomController room = this.GetRoomByFloorFacePosition(floor, face, position);
+		if(this.focusedRoom) {
+			this.focusedRoom.UnFocusRoom();
+		}
+		room.FocusRoom();
+		this.focusedRoom = room;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
