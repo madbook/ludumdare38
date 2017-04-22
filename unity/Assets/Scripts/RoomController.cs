@@ -28,6 +28,9 @@ public class RoomController : MonoBehaviour {
 		this.roomColors.Add("empty-unfocused",  new Color (.5f,.5f,.5f,0f));
 	}
 
+	public float personYOffset;
+	public Vector2[] personPositions;
+
 	public bool IsRoomFull {
 		get {
 			foreach (PersonController person in roomOccupents) {
@@ -42,9 +45,23 @@ public class RoomController : MonoBehaviour {
 	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
 
 	public bool AddPersonToRoom(PersonController person) {
+		if (person == null) return false;
+
 		for (int i = 0; i < roomOccupents.Length; i++) {
 			if (roomOccupents[i] == null) {
 				roomOccupents[i] = person;
+
+				if (personPositions.Length >= i) {
+					Debug.Log(person);
+					Debug.Log(person.gameObject);
+					Debug.Log(person.gameObject.transform);
+					person.gameObject.transform.localPosition = new Vector3(
+						personPositions[i].x,
+						personYOffset,
+						personPositions[i].y
+					);
+				}
+
 				return true;
 			}
 		}
