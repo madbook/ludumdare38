@@ -50,6 +50,7 @@ public static class TowerSetup {
 						parent.transform
 					);
 					RoomController roomController = room.GetComponent<RoomController>();
+					room.AddComponent<MeshRenderer>();
 					roomController.towerController = towerController;
 					roomController.floor = y;
 					roomController.face = r;
