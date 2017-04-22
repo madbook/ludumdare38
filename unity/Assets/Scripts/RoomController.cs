@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 
 public class RoomController : MonoBehaviour {
-	const int maxRoomOccupancy = 4;
+	public const int maxRoomOccupancy = 4;
 
 	public TowerController towerController;
 	public int floor;
 	public int face;
 	public int position;
-
-	public enum RoomType{power, farm, rubble, empty};
 
 	public Dictionary<RoomType, ResourceCalculator.Income> incomeByType = new Dictionary<RoomType, ResourceCalculator.Income>();
 
@@ -32,17 +30,27 @@ public class RoomController : MonoBehaviour {
 	
 	private float workerEfficiency = .001f;
 
-	public Dictionary<string, Color> roomColors = new Dictionary<string, Color>();
+	struct ColorKey {
+		public readonly RoomType type;
+		public readonly bool isFocused;
+
+		public ColorKey(RoomType type, bool isFocused) {
+			this.type = type;
+			this.isFocused = isFocused;
+		}
+	}
+
+	Dictionary<ColorKey, Color> roomColors = new Dictionary<ColorKey, Color>();
 
 	public void Start() {
-		this.roomColors.Add("power-focused",  new Color (1f,1f,.2f,0f));
-		this.roomColors.Add("farm-focused",  new Color (.2f,1f,.2f,0f));
-		this.roomColors.Add("rubble-focused",  new Color (.2f,.2f,.2f,0f));
-		this.roomColors.Add("empty-focused",  new Color (.7f,.7f,.7f,0f));
-		this.roomColors.Add("power-unfocused",  new Color (.8f,.8f,0f,0f));
-		this.roomColors.Add("farm-unfocused",  new Color (0f,.8f,0f,0f));
-		this.roomColors.Add("rubble-unfocused",  new Color (.1f,.1f,.1f,0f));
-		this.roomColors.Add("empty-unfocused",  new Color (.5f,.5f,.5f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Power, true),  new Color (1f,1f,.2f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Farm, true),  new Color (.2f,1f,.2f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Rubble, true),  new Color (.2f,.2f,.2f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Empty, true),  new Color (.7f,.7f,.7f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Power, false),  new Color (.8f,.8f,0f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Farm, false),  new Color (0f,.8f,0f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Rubble, false),  new Color (.1f,.1f,.1f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Empty, false),  new Color (.5f,.5f,.5f,0f));
 
 		this.incomeByType.Add(RoomType.power, new ResourceCalculator.Income(0f, 1f));
 		this.incomeByType.Add(RoomType.farm, new ResourceCalculator.Income(1f, -.25f));
@@ -94,6 +102,8 @@ public class RoomController : MonoBehaviour {
 			if (roomOccupents[i] == null) {
 				roomOccupents[i] = person;
 
+				person.gameObject.transform.SetParent(transform, false);
+
 				if (personPositions.Length >= i) {
 					Debug.Log(person);
 					Debug.Log(person.gameObject);
@@ -119,6 +129,28 @@ public class RoomController : MonoBehaviour {
 				this.type = this.assignment.type;
 				// Job's done!
 				this.assignment.assigned = false;
+
+				if (this.type == RoomType.Empty) {
+					SetAllOccupantsToIdle();
+				} else {
+					SetAllOccupantsToWork();
+				}
+			}
+		}
+	}
+
+	void SetAllOccupantsToWork() {
+		foreach (PersonController person in roomOccupents) {
+			if (person.Job != JobAssignment.OperatingRoom) {
+				person.SetJobAssignment(JobAssignment.OperatingRoom);
+			}
+		}
+	}
+
+	void SetAllOccupantsToIdle() {
+		foreach (PersonController person in roomOccupents) {
+			if (person.Job != JobAssignment.Idle) {
+				person.SetJobAssignment(JobAssignment.Idle);
 			}
 		}
 	}
@@ -126,25 +158,17 @@ public class RoomController : MonoBehaviour {
 	public void Redraw() {
 		Renderer[] children = transform.GetComponentsInChildren<Renderer>();
 
-		string focused;
-		if(this.focused){
-			focused = "-focused";
-		} else {
-			focused = "-unfocused";
-		}
-
-    	foreach ( Renderer rend in children) {
-			if (this.roomColors.ContainsKey(this.type + focused)) {
- 				rend.material.color = this.roomColors[this.type + focused];
+		ColorKey key = new ColorKey(type, focused);
+    foreach ( Renderer rend in children) {
+			if (this.roomColors.ContainsKey(key)) {
+ 				rend.material.color = this.roomColors[key];
 			}
 		}
 	}
 
 	void OnMouseDown() {
-		//gameObject.SetActive(false);
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		this.towerController.FocusRoom(floor, face, position);
-		//this.FocusRoom();
 		this.Redraw();
 	}
 
@@ -160,20 +184,20 @@ public class RoomController : MonoBehaviour {
 
 	public void BuildPower() {
 		if(this.CanBuild) {
-			this.assignment = new Assignment(RoomType.power, 0);
+			this.assignment = new Assignment(RoomType.Power, 0);
 		}
 	}
 
 	public void BuildFarm() {
 		if(this.CanBuild) {
 			Debug.Log("building farm");
-			this.assignment = new Assignment(RoomType.farm, 0);
+			this.assignment = new Assignment(RoomType.Farm, 0);
 		}
 	}
 	
 	public bool CanBuild {
 		get {
-			return !this.assignment.assigned && this.type == RoomType.empty;
+			return !this.assignment.assigned && this.type == RoomType.Empty;
 		}
 	}
 
@@ -187,7 +211,7 @@ public class RoomController : MonoBehaviour {
 		if (this.assignment.assigned ) {
 			// clear assigment?
 		} else {
-			this.assignment = new Assignment(RoomType.empty, 0);
+			this.assignment = new Assignment(RoomType.Empty, 0);
 		}
 	}
 }

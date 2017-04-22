@@ -24,7 +24,7 @@ public static class PopulationSetup {
             false
           );
           PersonController person = clone.GetComponent<PersonController>();
-          room.AddPersonToRoom(person);
+          towerController.PutPersonInRoom(person, room);
           population[i] = person;
           break;
         }

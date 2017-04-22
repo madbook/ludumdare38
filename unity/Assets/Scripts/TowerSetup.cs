@@ -60,13 +60,13 @@ public static class TowerSetup {
 
 					int typeRoll = Random.Range(0, 100);
 					if (typeRoll<50) {
-						roomController.type = RoomController.RoomType.empty;
+						roomController.type = RoomType.Empty;
 					} else if (typeRoll<55) {
-						roomController.type = RoomController.RoomType.farm;
+						roomController.type = RoomType.Farm;
 					} else if (typeRoll<60) {
-						roomController.type = RoomController.RoomType.power;
+						roomController.type = RoomType.Power;
 					} else {
-						roomController.type = RoomController.RoomType.rubble;
+						roomController.type = RoomType.Rubble;
 					}
 					//roomController.Redraw();
 					rooms[i] = roomController;

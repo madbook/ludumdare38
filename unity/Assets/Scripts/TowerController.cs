@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class TowerController : MonoBehaviour {
 
 	public GameObject roomTemplate;
 	public GameObject personTemplate;
+	public Text workerText;
 	public int numFloors = 4;
 	public int numRoomsPerFloor = 3;
 	public int numFaces = 4;
@@ -34,11 +37,59 @@ public class TowerController : MonoBehaviour {
 		);
 
 		this.resourceCalculator = new ResourceCalculator();
+
+		foreach (PersonController person in population) {
+			RoomController room = person.CurrentRoom;
+			if (room == null) {
+				continue;
+			}
+			if (room.type == RoomType.Empty || room.type == RoomType.Rubble) {
+				continue;
+			}
+			person.SetJobAssignment(JobAssignment.OperatingRoom);
+		}
+
+		UpdateWorkerText();
 	}
 	
 	RoomController GetRoomByFloorFacePosition(int floor, int face, int position) {
 		Debug.Log(floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position);
 		return rooms[floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position];
+	}
+
+	public int IdleWorkerCount {
+		get {
+			int num = 0;
+			foreach (PersonController person in population) {
+				if (person.Job == JobAssignment.Idle) {
+					num += 1;
+				}
+			}
+			return num;
+		}
+	}
+
+	public List<PersonController> GetWorkersByJob(JobAssignment job) {
+		List<PersonController> workers = new List<PersonController>();
+		foreach (PersonController person in population) {
+			if (person.Job == job) {
+				workers.Add(person);
+			}
+		}
+		return workers;
+	}
+
+	public List<RoomController> GetJobVacancies() {
+		List<RoomController> vacancies = new List<RoomController>();
+		foreach (RoomController room in rooms) {
+			if (room.IsRoomFull) { continue; }
+			if (room.type == RoomType.Empty || room.type == RoomType.Rubble) { continue; }
+			int numVacancies = RoomController.maxRoomOccupancy - room.WorkerCount;
+			for (int i = 0; i < numVacancies; i++) {
+				vacancies.Add(room);
+			}
+		}
+		return vacancies;
 	}
 
 	public void FocusRoom (int floor, int face, int position) {
@@ -48,14 +99,13 @@ public class TowerController : MonoBehaviour {
 		}
 		room.FocusRoom();
 		this.focusedRoom = room;
+		Debug.Log("Workes: " + room.WorkerCount);
 	}
 
 	// Update is called once per frame
 	public void Update () {
-		
 		//actions on the focused room
 		if(this.focusedRoom) {
-
 			if (Input.GetKeyDown("p")) {
 				this.focusedRoom.BuildPower();
 			}
@@ -68,11 +118,38 @@ public class TowerController : MonoBehaviour {
 		}
 
 		ResourceCalculator.Update(this);
+
+		List<PersonController> idleWorkers = GetWorkersByJob(JobAssignment.Idle);
+		List<RoomController> vacancies = GetJobVacancies();
+		int workerIndex = 0;
+		int vacancyIndex = 0;
+
+		if (idleWorkers.Count + vacancies.Count == 0) {
+			return;
+		}
+
+		while (workerIndex < idleWorkers.Count && vacancyIndex < vacancies.Count) {
+			PersonController person = idleWorkers[workerIndex];
+			RoomController room = vacancies[vacancyIndex];
+			PutPersonInRoom(person, room);
+			person.SetJobAssignment(JobAssignment.OperatingRoom);
+			workerIndex += 1;
+			vacancyIndex += 1;
+		}
+
+		UpdateWorkerText();
 	}
 
-
+	public void PutPersonInRoom(PersonController person, RoomController room) {
+		room.AddPersonToRoom(person);
+		person.SetCurrentRoom(room);
+	}
 
 	public void Log () {
 		Debug.Log("Hi");
+	}
+
+	void UpdateWorkerText() {
+		workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
 	}
 }
