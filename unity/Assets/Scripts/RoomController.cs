@@ -23,7 +23,7 @@ public class RoomController : MonoBehaviour {
 		this.roomColors.Add("rubble-focused",  new Color (.2f,.2f,.2f,0f));
 		this.roomColors.Add("empty-focused",  new Color (.7f,.7f,.7f,0f));
 		this.roomColors.Add("power-unfocused",  new Color (.8f,.8f,0f,0f));
-		this.roomColors.Add("farm-unfocused",  new Color (1f,0f,0f,0f));
+		this.roomColors.Add("farm-unfocused",  new Color (0f,.8f,0f,0f));
 		this.roomColors.Add("rubble-unfocused",  new Color (.1f,.1f,.1f,0f));
 		this.roomColors.Add("empty-unfocused",  new Color (.5f,.5f,.5f,0f));
 	}
@@ -69,7 +69,7 @@ public class RoomController : MonoBehaviour {
 
 	void OnMouseDown() {
 		//gameObject.SetActive(false);
-		Debug.Log(this.floor + ", " + this.face + ", " + this.position);
+		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		this.towerController.FocusRoom(floor, face, position);
 		//this.FocusRoom();
 	}

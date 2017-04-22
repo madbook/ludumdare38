@@ -56,6 +56,19 @@ public static class TowerSetup {
 					roomController.floor = y;
 					roomController.face = r;
 					roomController.position = x;
+					
+
+					int typeRoll = Random.Range(0, 100);
+					if (typeRoll<50) {
+						roomController.type = RoomController.RoomType.empty;
+					} else if (typeRoll<55) {
+						roomController.type = RoomController.RoomType.farm;
+					} else if (typeRoll<60) {
+						roomController.type = RoomController.RoomType.power;
+					} else {
+						roomController.type = RoomController.RoomType.rubble;
+					}
+
 					rooms[i] = roomController;
 					i++;
 				}
