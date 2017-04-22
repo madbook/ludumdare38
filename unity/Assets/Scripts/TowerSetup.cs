@@ -31,7 +31,7 @@ public static class TowerSetup {
 					// Subtract depth offset to keep floor centered horizontally
 					float offX = (numRoomsPerFloor - 1) * width / 2;
 					float posX = ((float) x / numRoomsPerFloor) * horizontalArea - offX;
-					float posY = -1f * ((float) y / numFloors) * verticalArea;
+					float posY = ((float) y / numFloors) * verticalArea;
 
 					Vector3 position = new Vector3(
 						posX,
