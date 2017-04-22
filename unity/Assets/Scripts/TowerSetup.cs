@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public static class TowerSetup {
-	public static GameObject[] CreateTower(int numFloors, int numRoomsPerFloor, GameObject template, GameObject parent) {
+	public static GameObject[] CreateTower(int numFloors, int numRoomsPerFloor, GameObject template, GameObject parent, TowerController towerController) {
 		// Note that numRoomsPerFloor is the number of rooms per floor *per side*
 		// of the tower, so the total number of rooms is multiplied by 4
 		GameObject[] rooms = new GameObject[4 * numFloors * numRoomsPerFloor];
@@ -43,12 +43,17 @@ public static class TowerSetup {
 					
 					Debug.Log("Spawning room (" + posX + "," + posY + ")");
 
-					GameObject.Instantiate(
+					GameObject room = GameObject.Instantiate(
 						template,
 						position,
 						rotation,
 						parent.transform
 					);
+					RoomController roomController = room.GetComponent<RoomController>();
+					roomController.towerController = towerController;
+					roomController.floor = y;
+					roomController.face = r;
+					roomController.position = x;
 				}
 			}
 		}

@@ -6,18 +6,26 @@ public class TowerController : MonoBehaviour {
 	public int numFloors = 4;
 	public int numRoomsPerFloor = 3;
 
+	public static float hope = 0;
+	public static float chaos = 0;
+
 	// Use this for initialization
 	void Start () {
 		TowerSetup.CreateTower(
 			numFloors,
 			numRoomsPerFloor,
 			roomTemplate,
-			gameObject
+			gameObject,
+			this
 		);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void Log () {
+		Debug.Log("Hi");
 	}
 }
