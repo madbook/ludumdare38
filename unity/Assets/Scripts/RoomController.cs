@@ -42,6 +42,18 @@ public class RoomController : MonoBehaviour {
 		}
 	}
 
+	public int Count {
+		get {
+			int count = 0;
+			foreach (PersonController person in roomOccupents) {
+				if (person != null) {
+					count += 1;
+				}
+			}
+			return count;
+		}
+	}
+
 	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
 
 	public bool AddPersonToRoom(PersonController person) {
