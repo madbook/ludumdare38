@@ -48,9 +48,24 @@ public class TowerController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	public void Update () {
 		
+		//actions on the focused room
+		if(this.focusedRoom) {
+
+			if (Input.GetKeyDown("p")) {
+				this.focusedRoom.BuildPower();
+			}
+			if (Input.GetKeyDown("f")) {
+				this.focusedRoom.BuildFarm();
+			}
+			if (Input.GetKeyDown("c")) {
+				this.focusedRoom.Clear();
+			}
+		}
 	}
+
+
 
 	public void Log () {
 		Debug.Log("Hi");
