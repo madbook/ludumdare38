@@ -13,6 +13,7 @@ public class TowerController : MonoBehaviour {
 
 	RoomController[] rooms;
 	PersonController[] population;
+	RoomController focusedRoom;
 
 	// Use this for initialization
 	void Start () {

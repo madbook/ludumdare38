@@ -23,9 +23,6 @@ public static class PopulationSetup {
             room.transform,
             false
           );
-          // push the player model out so we can see it, eventually this
-          // positioning within the room needs to happen inside of AddPersonToRoom
-          clone.transform.localPosition = new Vector3(0f, 0f, -1f);
           PersonController person = clone.GetComponent<PersonController>();
           room.AddPersonToRoom(person);
           population[i] = person;
