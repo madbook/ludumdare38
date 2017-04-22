@@ -3,8 +3,10 @@
 public class TowerController : MonoBehaviour {
 
 	public GameObject roomTemplate;
+	public GameObject personTemplate;
 	public int numFloors = 4;
 	public int numRoomsPerFloor = 3;
+<<<<<<< HEAD
 	public int numFaces = 4;
 
 	public float hope = 0;
@@ -12,6 +14,14 @@ public class TowerController : MonoBehaviour {
 
 	RoomController[] rooms;
 	RoomController focusedRoom;
+=======
+	public int numStartingPopulation = 10;
+	public static float hope = 0;
+	public static float chaos = 0;
+
+	RoomController[] rooms;
+	PersonController[] population;
+>>>>>>> 15b5bb65aa557683e508f584a1451b814b0a1d1d
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +30,13 @@ public class TowerController : MonoBehaviour {
 			numRoomsPerFloor,
 			roomTemplate,
 			gameObject,
+			this
+		);
+
+		population = PopulationSetup.CreatePopulation(
+			numStartingPopulation,
+			personTemplate,
+			rooms,
 			this
 		);
 	}
