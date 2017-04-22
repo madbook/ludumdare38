@@ -1,12 +1,35 @@
 ﻿using UnityEngine;
 
 public class RoomController : MonoBehaviour {
+	const int maxRoomOccupancy = 4;
 
 	public TowerController towerController;
-
 	public int floor;
 	public int face;
 	public int position;
+
+	public bool IsRoomFull {
+		get {
+			foreach (PersonController person in roomOccupents) {
+				if (person == null) { 
+					return false;
+				}
+			}
+			return true;
+		}
+	}
+
+	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
+
+	public bool AddPersonToRoom(PersonController person) {
+		for (int i = 0; i < roomOccupents.Length; i++) {
+			if (roomOccupents[i] == null) {
+				roomOccupents[i] = person;
+				return true;
+			}
+		}
+		return false;
+	}
 
 	void OnMouseDown() {
 		//gameObject.SetActive(false);
