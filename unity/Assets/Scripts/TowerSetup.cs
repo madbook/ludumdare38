@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
 public static class TowerSetup {
-	public static GameObject[] CreateTower(int numFloors, int numRoomsPerFloor, GameObject template, GameObject parent, TowerController towerController) {
+	public static RoomController[] CreateTower(int numFloors, int numRoomsPerFloor, GameObject template, GameObject parent, TowerController towerController) {
 		// Note that numRoomsPerFloor is the number of rooms per floor *per side*
 		// of the tower, so the total number of rooms is multiplied by 4
-		GameObject[] rooms = new GameObject[4 * numFloors * numRoomsPerFloor];
+		RoomController[] rooms = new RoomController[4 * numFloors * numRoomsPerFloor];
 
 		BoxCollider bc = template.GetComponent<BoxCollider>();
 		if (bc == null) {
@@ -23,6 +23,7 @@ public static class TowerSetup {
 		Debug.Log("" + width + " x " + height + " x " + depth);
 		Debug.Log("" + horizontalArea + " x " + verticalArea + " x " + depthOffset);
 
+		int i = 0;
 		for (int y = 0; y < numFloors; y++) {
 			for (int r = 0; r < 4; r++) {
 				Quaternion rotation = Quaternion.Euler(0f, r * 90, 0f);
@@ -55,6 +56,8 @@ public static class TowerSetup {
 					roomController.floor = y;
 					roomController.face = r;
 					roomController.position = x;
+					rooms[i] = roomController;
+					i++;
 				}
 			}
 		}
