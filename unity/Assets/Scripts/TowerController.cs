@@ -11,9 +11,10 @@ public class TowerController : MonoBehaviour {
 	public float chaos = 0;
 	public int numStartingPopulation = 10;
 
-	RoomController[] rooms;
+	public RoomController[] rooms;
 	PersonController[] population;
 	RoomController focusedRoom;
+	ResourceCalculator resourceCalculator;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +32,8 @@ public class TowerController : MonoBehaviour {
 			rooms,
 			this
 		);
+
+		this.resourceCalculator = new ResourceCalculator();
 	}
 	
 	RoomController GetRoomByFloorFacePosition(int floor, int face, int position) {
@@ -63,6 +66,8 @@ public class TowerController : MonoBehaviour {
 				this.focusedRoom.Clear();
 			}
 		}
+
+		ResourceCalculator.Update(this);
 	}
 
 

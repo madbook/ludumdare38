@@ -11,6 +11,8 @@ public class RoomController : MonoBehaviour {
 
 	public enum RoomType{power, farm, rubble, empty};
 
+	public Dictionary<RoomType, ResourceCalculator.Income> incomeByType = new Dictionary<RoomType, ResourceCalculator.Income>();
+
 	public RoomType type;
 
 	public struct Assignment{
@@ -41,7 +43,13 @@ public class RoomController : MonoBehaviour {
 		this.roomColors.Add("farm-unfocused",  new Color (0f,.8f,0f,0f));
 		this.roomColors.Add("rubble-unfocused",  new Color (.1f,.1f,.1f,0f));
 		this.roomColors.Add("empty-unfocused",  new Color (.5f,.5f,.5f,0f));
+
+		this.incomeByType.Add(RoomType.power, new ResourceCalculator.Income(0f, 1f));
+		this.incomeByType.Add(RoomType.farm, new ResourceCalculator.Income(1f, -.25f));
+		this.incomeByType.Add(RoomType.rubble, new ResourceCalculator.Income(0f, 0f));
+		this.incomeByType.Add(RoomType.empty, new ResourceCalculator.Income(0f, -.05f));
 	}
+
 
 	public float personYOffset;
 	public Vector2[] personPositions;
@@ -74,8 +82,6 @@ public class RoomController : MonoBehaviour {
 	public float GetWorkforce {
 		get {
 			// TODO: different workers work different speeds.
-			Debug.Log(roomOccupents.Length);
-			Debug.Log(workerEfficiency);
 			
 			return (float)this.WorkerCount * workerEfficiency;
 		}
@@ -109,7 +115,6 @@ public class RoomController : MonoBehaviour {
 		this.Redraw();
 		if (this.assignment.assigned) {
 			this.assignment.progress += this.GetWorkforce;
-			Debug.Log("Amount complete " + this.assignment.progress);
 			if(this.assignment.progress > 1) {
 				this.type = this.assignment.type;
 				// Job's done!
@@ -169,6 +174,12 @@ public class RoomController : MonoBehaviour {
 	public bool CanBuild {
 		get {
 			return !this.assignment.assigned && this.type == RoomType.empty;
+		}
+	}
+
+	public ResourceCalculator.Income Income {
+		get {
+			return this.incomeByType[this.type];
 		}
 	}
 
