@@ -28,7 +28,7 @@ public class RoomController : MonoBehaviour {
 
 	public bool focused;
 	
-	public float workerEfficiency = .01f;
+	private float workerEfficiency = .001f;
 
 	public Dictionary<string, Color> roomColors = new Dictionary<string, Color>();
 
@@ -57,7 +57,7 @@ public class RoomController : MonoBehaviour {
 		}
 	}
 
-	public int Count {
+	public int WorkerCount {
 		get {
 			int count = 0;
 			foreach (PersonController person in roomOccupents) {
@@ -77,7 +77,7 @@ public class RoomController : MonoBehaviour {
 			Debug.Log(roomOccupents.Length);
 			Debug.Log(workerEfficiency);
 			
-			return (float)roomOccupents.Length * workerEfficiency;
+			return (float)this.WorkerCount * workerEfficiency;
 		}
 	}
 
