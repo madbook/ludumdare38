@@ -9,9 +9,11 @@ public class TowerController : MonoBehaviour {
 	public static float hope = 0;
 	public static float chaos = 0;
 
+	RoomController[] rooms;
+
 	// Use this for initialization
 	void Start () {
-		TowerSetup.CreateTower(
+		rooms = TowerSetup.CreateTower(
 			numFloors,
 			numRoomsPerFloor,
 			roomTemplate,
