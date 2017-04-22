@@ -6,22 +6,14 @@ public class TowerController : MonoBehaviour {
 	public GameObject personTemplate;
 	public int numFloors = 4;
 	public int numRoomsPerFloor = 3;
-<<<<<<< HEAD
 	public int numFaces = 4;
-
 	public float hope = 0;
 	public float chaos = 0;
-
-	RoomController[] rooms;
-	RoomController focusedRoom;
-=======
 	public int numStartingPopulation = 10;
-	public static float hope = 0;
-	public static float chaos = 0;
 
 	RoomController[] rooms;
 	PersonController[] population;
->>>>>>> 15b5bb65aa557683e508f584a1451b814b0a1d1d
+	RoomController focusedRoom;
 
 	// Use this for initialization
 	void Start () {
