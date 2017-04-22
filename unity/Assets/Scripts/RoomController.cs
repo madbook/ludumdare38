@@ -13,7 +13,22 @@ public class RoomController : MonoBehaviour {
 
 	public RoomType type;
 
+	public struct Assignment{
+		public RoomType type;
+		public float progress;
+		public bool assigned;
+		public Assignment(RoomType type, float progress) {
+			this.type = type;
+			this.progress = progress;
+			this.assigned = true;
+		}
+	}
+
+	public Assignment assignment;
+
 	public bool focused;
+	
+	public float workerEfficiency = .01f;
 
 	public Dictionary<string, Color> roomColors = new Dictionary<string, Color>();
 
@@ -56,6 +71,16 @@ public class RoomController : MonoBehaviour {
 
 	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
 
+	public float GetWorkforce {
+		get {
+			// TODO: different workers work different speeds.
+			Debug.Log(roomOccupents.Length);
+			Debug.Log(workerEfficiency);
+			
+			return (float)roomOccupents.Length * workerEfficiency;
+		}
+	}
+
 	public bool AddPersonToRoom(PersonController person) {
 		if (person == null) return false;
 
@@ -80,7 +105,20 @@ public class RoomController : MonoBehaviour {
 		return false;
 	}
 
-		void Update() {
+	void Update() {
+		this.Redraw();
+		if (this.assignment.assigned) {
+			this.assignment.progress += this.GetWorkforce;
+			Debug.Log("Amount complete " + this.assignment.progress);
+			if(this.assignment.progress > 1) {
+				this.type = this.assignment.type;
+				// Job's done!
+				this.assignment.assigned = false;
+			}
+		}
+	}
+
+	public void Redraw() {
 		Renderer[] children = transform.GetComponentsInChildren<Renderer>();
 
 		string focused;
@@ -91,54 +129,54 @@ public class RoomController : MonoBehaviour {
 		}
 
     	foreach ( Renderer rend in children) {
-            rend.material.color = this.roomColors[this.type + focused];
+			if (this.roomColors.ContainsKey(this.type + focused)) {
+ 				rend.material.color = this.roomColors[this.type + focused];
+			}
 		}
 	}
-
 
 	void OnMouseDown() {
 		//gameObject.SetActive(false);
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		this.towerController.FocusRoom(floor, face, position);
 		//this.FocusRoom();
+		this.Redraw();
 	}
 
 	public void FocusRoom(){
-    	Renderer[] children = transform.GetComponentsInChildren<Renderer>();
-    	foreach ( Renderer  rend  in children) {
-            rend.material.color = new Color (1,0,0,0);
-		}
 		this.focused = true;
+		this.Redraw();
 	}
 
 	public void UnFocusRoom(){
-    	Renderer[] children = transform.GetComponentsInChildren<Renderer>();
-
-    	foreach ( Renderer  rend  in children) {
-            rend.material.color = new Color (1,1,1,1);
-		}
 		this.focused = false;
+		this.Redraw();
 	}
 
 	public void BuildPower() {
 		if(this.CanBuild) {
-			this.type = RoomType.power;
+			this.assignment = new Assignment(RoomType.power, 0);
 		}
 	}
 
 	public void BuildFarm() {
 		if(this.CanBuild) {
-			this.type = RoomType.farm;
+			Debug.Log("building farm");
+			this.assignment = new Assignment(RoomType.farm, 0);
 		}
 	}
 	
 	public bool CanBuild {
 		get {
-			return this.type == RoomType.empty;
+			return !this.assignment.assigned && this.type == RoomType.empty;
 		}
 	}
 
 	public void Clear() {
-		this.type = RoomType.empty;
+		if (this.assignment.assigned ) {
+			// clear assigment?
+		} else {
+			this.assignment = new Assignment(RoomType.empty, 0);
+		}
 	}
 }

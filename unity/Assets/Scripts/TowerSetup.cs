@@ -68,7 +68,7 @@ public static class TowerSetup {
 					} else {
 						roomController.type = RoomController.RoomType.rubble;
 					}
-
+					//roomController.Redraw();
 					rooms[i] = roomController;
 					i++;
 				}
