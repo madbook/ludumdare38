@@ -6,6 +6,7 @@ public class RoomRenderer : MonoBehaviour {
 	public GameObject farmScene;
 	public GameObject rubbleScene;
 	public GameObject powerScene;
+	public GameObject constructionSprite;
 
 	RoomController room;
 
@@ -52,6 +53,12 @@ public class RoomRenderer : MonoBehaviour {
 			powerScene.SetActive(true);
 		} else if (room.type != RoomType.Power && powerScene.activeSelf) {
 			powerScene.SetActive(false);
+		}
+
+		if (room.assignment.assigned && !constructionSprite.activeSelf) {
+			constructionSprite.SetActive(true);
+		} else if (!room.assignment.assigned && constructionSprite.activeSelf) {
+			constructionSprite.SetActive(false);
 		}
 	}
 
