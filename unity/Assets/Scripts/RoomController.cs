@@ -5,9 +5,9 @@ public class RoomController : MonoBehaviour {
 	public const int maxRoomOccupancy = 4;
 
 	Wiggler wiggler;
+	RoomRenderer roomRenderer;
 
 	public TowerController towerController;
-	public GameObject roomModel;
 	public int floor;
 	public int face;
 	public int position;
@@ -34,6 +34,7 @@ public class RoomController : MonoBehaviour {
 	private float workerEfficiency = .001f;
 
 	public void Awake() {
+		roomRenderer = GetComponent<RoomRenderer>();
 		wiggler = GetComponent<Wiggler>();
 		this.incomeByType.Add(RoomType.Power, new ResourceCalculator.Income(0f, 1f));
 		this.incomeByType.Add(RoomType.Farm, new ResourceCalculator.Income(1f, -.25f));
@@ -165,8 +166,7 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void Redraw() {
-		ColorKey key = new ColorKey(type, focused);
-		RoomRenderer.RedrawRoom(this, key);
+		roomRenderer.Redraw();
 	}
 
 	void OnMouseDown() {
