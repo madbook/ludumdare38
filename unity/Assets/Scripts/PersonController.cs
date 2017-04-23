@@ -29,16 +29,16 @@ public class PersonController : MonoBehaviour {
 			bool bored;
 			switch (this.job) {
 				case JobAssignment.Idle:
-					bored = Random.Range(0,10) == 0;
+					bored = Random.Range(0,100) == 0;
 					break;
 				case JobAssignment.GoingToRoom:
 					bored = false;
 					break;
 				case JobAssignment.OperatingRoom:
-					bored = Random.Range(0,100) == 0;
+					bored = Random.Range(0,1000) == 0;
 					break;
 				case JobAssignment.BuildingRoom:
-					bored = Random.Range(0,1000) == 0;
+					bored = Random.Range(0,10000) == 0;
 					break;
 				default:
 					bored = false; // people are never bored when they get to do impossible things

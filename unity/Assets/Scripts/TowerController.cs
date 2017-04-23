@@ -78,6 +78,17 @@ public class TowerController : MonoBehaviour {
 		return workers;
 	}
 
+	public List<PersonController> GetBoredWorkers() {
+		List<PersonController> workers = new List<PersonController>();
+		foreach (PersonController person in population) {
+			if (person.Bored) {
+				workers.Add(person);
+			}
+		}
+		return workers;
+	}
+
+
 	public List<RoomController> GetJobVacancies() {
 		List<RoomController> vacancies = new List<RoomController>();
 		foreach (RoomController room in rooms) {
@@ -127,7 +138,7 @@ public class TowerController : MonoBehaviour {
 		}
 		elapsed += Time.deltaTime;
 
-		List<PersonController> idleWorkers = GetWorkersByJob(JobAssignment.Idle);
+		List<PersonController> idleWorkers = GetBoredWorkers();
 		List<RoomController> vacancies = GetJobVacancies();
 		int workerIndex = 0;
 		int vacancyIndex = 0;
@@ -158,7 +169,7 @@ public class TowerController : MonoBehaviour {
 	}
 
 	void UpdateWorkerText() {
-		//workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
+		workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
 	}
 
 	void UpdateResourceText(ResourceCalculator.Income income) {
