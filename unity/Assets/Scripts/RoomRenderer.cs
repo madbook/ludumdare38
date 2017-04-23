@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class RoomRenderer : MonoBehaviour {
 	public GameObject roomModel;
 	public GameObject farmScene;
+	public GameObject rubbleScene;
 
 	RoomController room;
 
@@ -11,6 +12,7 @@ public class RoomRenderer : MonoBehaviour {
 
 	static RoomRenderer() {
 		roomColors.Add(RoomType.Power, new Color(.8f,.8f,0f,0f));
+		roomColors.Add(RoomType.Farm, new Color(.5f,.6f,.5f,0f));
 		// roomColors.Add(RoomType.Farm, new Color(0f,.8f,0f,0f));
 		roomColors.Add(RoomType.Rubble, new Color(.1f,.1f,.1f,0f));
 		roomColors.Add(RoomType.Empty, new Color(.5f,.5f,.5f,0f));
@@ -37,6 +39,12 @@ public class RoomRenderer : MonoBehaviour {
 			farmScene.SetActive(true);
 		} else if (room.type != RoomType.Farm && farmScene.activeSelf) {
 			farmScene.SetActive(false);
+		}
+
+		if (room.type == RoomType.Rubble && !rubbleScene.activeSelf) {
+			rubbleScene.SetActive(true);
+		} else if (room.type != RoomType.Rubble && rubbleScene.activeSelf) {
+			rubbleScene.SetActive(false);
 		}
 	}
 
