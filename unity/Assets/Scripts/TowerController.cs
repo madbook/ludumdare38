@@ -140,6 +140,9 @@ public class TowerController : MonoBehaviour {
 
 		List<PersonController> idleWorkers = GetBoredWorkers();
 		List<RoomController> vacancies = GetJobVacancies();
+
+		shuffleRooms(vacancies);
+
 		int workerIndex = 0;
 		int vacancyIndex = 0;
 
@@ -151,7 +154,12 @@ public class TowerController : MonoBehaviour {
 			PersonController person = idleWorkers[workerIndex];
 			RoomController room = vacancies[vacancyIndex];
 			PutPersonInRoom(person, room);
-			person.SetJobAssignment(JobAssignment.Idle);
+			if(room.assignment.assigned) {
+				person.SetJobAssignment(JobAssignment.BuildingRoom);
+			} else {
+				person.SetJobAssignment(JobAssignment.OperatingRoom);
+			}
+			
 			workerIndex += 1;
 			vacancyIndex += 1;
 		}
@@ -175,4 +183,17 @@ public class TowerController : MonoBehaviour {
 	void UpdateResourceText(ResourceCalculator.Income income) {
 		resourceText.text = "Food: " + income.food + " Energy: " + income.energy;
 	}
+
+	void shuffleRooms(List<RoomController> rooms)
+	{
+		for (int t = 0; t < rooms.Count; t++ )
+		{
+			RoomController tmp = rooms[t];
+			int r = Random.Range(t, rooms.Count);
+			rooms[t] = rooms[r];
+			rooms[r] = tmp;
+		}
+	}
+ 
+	
 }

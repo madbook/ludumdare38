@@ -108,12 +108,17 @@ public class RoomController : MonoBehaviour {
 			if (roomOccupents[i] == null) {
 				roomOccupents[i] = person;
 
+				if (person.CurrentRoom) {
+					person.CurrentRoom.roomOccupents[person.currentPosition] = null;
+				}
+				person.currentPosition = i;
+
 				person.gameObject.transform.SetParent(transform, false);
 
 				if (personPositions.Length >= i) {
-					Debug.Log(person);
+					/*Debug.Log(person);
 					Debug.Log(person.gameObject);
-					Debug.Log(person.gameObject.transform);
+					Debug.Log(person.gameObject.transform);*/
 					person.gameObject.transform.localPosition = new Vector3(
 						personPositions[i].x,
 						personYOffset,
@@ -221,6 +226,7 @@ public class RoomController : MonoBehaviour {
 
 	public ResourceCalculator.Income Income {
 		get {
+			//Debug.Log(this.type);
 			return this.incomeByType[this.type];
 		}
 	}
