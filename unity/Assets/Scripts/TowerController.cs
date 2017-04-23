@@ -7,6 +7,7 @@ public class TowerController : MonoBehaviour {
 	public GameObject roomTemplate;
 	public GameObject personTemplate;
 	public Text workerText;
+	public Text resourceText;
 	private int numFloors = 4;
 	private int numRoomsPerFloor = 3;
 	private int numFaces = 4;
@@ -15,9 +16,9 @@ public class TowerController : MonoBehaviour {
 	public int numStartingPopulation = 10;
 
 	public RoomController[] rooms;
+	float elapsed;
 	PersonController[] population;
 	RoomController focusedRoom;
-	ResourceCalculator resourceCalculator;
 
 	// Use this for initialization
 	void Start () {
@@ -35,8 +36,6 @@ public class TowerController : MonoBehaviour {
 			rooms,
 			this
 		);
-
-		this.resourceCalculator = new ResourceCalculator();
 
 		foreach (PersonController person in population) {
 			RoomController room = person.CurrentRoom;
@@ -117,7 +116,11 @@ public class TowerController : MonoBehaviour {
 			}
 		}
 
-		ResourceCalculator.Update(this);
+		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
+			ResourceCalculator.Income income = ResourceCalculator.CalculateIncome(rooms);
+			UpdateResourceText(income);
+		}
+		elapsed += Time.deltaTime;
 
 		List<PersonController> idleWorkers = GetWorkersByJob(JobAssignment.Idle);
 		List<RoomController> vacancies = GetJobVacancies();
@@ -151,5 +154,9 @@ public class TowerController : MonoBehaviour {
 
 	void UpdateWorkerText() {
 		workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
+	}
+
+	void UpdateResourceText(ResourceCalculator.Income income) {
+		resourceText.text = "Food: " + income.food + " Energy: " + income.energy;
 	}
 }

@@ -1,11 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ResourceCalculator  {
-
-	private static float elapsed;
-
+﻿public static class ResourceCalculator  {
 	public struct Income{
 		public float food;
 		public float energy;
@@ -19,21 +12,13 @@ public class ResourceCalculator  {
 		}
 	}
 
-	TowerController towerController;
-
-	public static void Update (TowerController towerController) {
-		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
-
-			CalculateIncome(towerController);
-		}
-		elapsed += Time.deltaTime;
-	}
-	
-	private static void CalculateIncome(TowerController towerController){
+	public static Income CalculateIncome(RoomController[] rooms){
 		Income totalIncome = new Income(0,0);
-		foreach (RoomController room in towerController.rooms) {
+
+		foreach (RoomController room in rooms) {
 			totalIncome += room.Income;
 		}
-		Debug.Log("Food: " + totalIncome.food + " Energy: " + totalIncome.energy);
+		// Debug.Log("Food: " + totalIncome.food + " Energy: " + totalIncome.energy);
+		return totalIncome;
 	}
 }
