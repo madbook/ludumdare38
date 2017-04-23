@@ -19,9 +19,11 @@ public class TowerController : MonoBehaviour {
 	float elapsed;
 	PersonController[] population;
 	RoomController focusedRoom;
+	CameraController cameraController;
 
 	// Use this for initialization
 	void Start () {
+		cameraController = FindObjectOfType<CameraController>();
 		rooms = TowerSetup.CreateTower(
 			numFloors,
 			numRoomsPerFloor,
@@ -115,6 +117,7 @@ public class TowerController : MonoBehaviour {
 		room.FocusRoom();
 		this.focusedRoom = room;
 		Debug.Log("Workes: " + room.WorkerCount);
+		cameraController.FocusCameraOnPoint(room.gameObject.transform, room.face);
 	}
 
 	// Update is called once per frame

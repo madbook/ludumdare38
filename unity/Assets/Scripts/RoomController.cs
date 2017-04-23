@@ -5,6 +5,7 @@ public class RoomController : MonoBehaviour {
 	public const int maxRoomOccupancy = 4;
 
 	public TowerController towerController;
+	public GameObject roomModel;
 	public int floor;
 	public int face;
 	public int position;
@@ -30,32 +31,7 @@ public class RoomController : MonoBehaviour {
 	
 	private float workerEfficiency = .001f;
 
-	struct ColorKey {
-		public readonly RoomType type;
-		public readonly bool isFocused;
-
-		public ColorKey(RoomType type, bool isFocused) {
-			this.type = type;
-			this.isFocused = isFocused;
-		}
-	}
-
-	Dictionary<ColorKey, Color> roomColors = new Dictionary<ColorKey, Color>();
-
 	public void Start() {
-		this.roomColors.Add(new ColorKey(RoomType.Power, true),  new Color (1f,1f,.2f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Farm, true),  new Color (.2f,1f,.2f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Rubble, true),  new Color (.2f,.2f,.2f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Empty, true),  new Color (.7f,.7f,.7f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Power, false),  new Color (.8f,.8f,0f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Farm, false),  new Color (0f,.8f,0f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Rubble, false),  new Color (.1f,.1f,.1f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Empty, false),  new Color (.5f,.5f,.5f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Filtration, true),  new Color (.1f,.1f,.7f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Filtration, false),  new Color (0f,0f,.5f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Converter, true),  new Color (1f,.5f,0f,0f));
-		this.roomColors.Add(new ColorKey(RoomType.Converter, false),  new Color (.8f,.2f,0f,0f));
-
 		this.incomeByType.Add(RoomType.Power, new ResourceCalculator.Income(0f, 1f));
 		this.incomeByType.Add(RoomType.Farm, new ResourceCalculator.Income(1f, -.25f));
 		this.incomeByType.Add(RoomType.Rubble, new ResourceCalculator.Income(0f, 0f));
@@ -176,14 +152,8 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void Redraw() {
-		Renderer[] children = transform.GetComponentsInChildren<Renderer>();
-
 		ColorKey key = new ColorKey(type, focused);
-    foreach ( Renderer rend in children) {
-			if (this.roomColors.ContainsKey(key)) {
- 				rend.material.color = this.roomColors[key];
-			}
-		}
+		RoomRenderer.RedrawRoom(this, key);
 	}
 
 	void OnMouseDown() {
