@@ -21,6 +21,7 @@ public class PersonController : MonoBehaviour {
 
 	public void SetCurrentRoom(RoomController currentRoom) {
 		this.currentRoom = currentRoom;
+		transform.Rotate(0f, Random.Range(0f, 360f), 0f);
 		wiggler.Enable(new Vector3(0f, 0.1f, 0f), 0.1f);
 	}
 
