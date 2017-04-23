@@ -21,3 +21,13 @@ public enum RoomType {
 	Converter,
 	Filtration
 };
+
+public struct ColorKey {
+	public readonly RoomType type;
+	public readonly bool isFocused;
+
+	public ColorKey(RoomType type, bool isFocused) {
+		this.type = type;
+		this.isFocused = isFocused;
+	}
+};
