@@ -15,6 +15,10 @@ public class RoomRenderer : MonoBehaviour {
 	public Sprite foodSprite;
 	public Sprite powerSprite;
 
+	public GameObject buildFarmPopup;
+	public GameObject buildPowerPopup;
+	public GameObject clearPopup;
+
 	RoomController room;
 
 	static Dictionary<RoomType, Color> roomColors = new Dictionary<RoomType, Color>();
@@ -62,34 +66,50 @@ public class RoomRenderer : MonoBehaviour {
 			powerScene.SetActive(false);
 		}
 
-		if (room.assignment.assigned && !constructionSprite.activeSelf) {
+		if (room.IsUnderConstruction && !constructionSprite.activeSelf) {
 			constructionSprite.SetActive(true);
-		} else if (!room.assignment.assigned && constructionSprite.activeSelf) {
+		} else if (!room.IsUnderConstruction && constructionSprite.activeSelf) {
 			constructionSprite.SetActive(false);
 		}
 	}
 
 	public void RedrawOnFocus() {
-		if (!ShouldPopupShow()) { return; }
+		if (room.IsUnderConstruction) {
+			return;
+		} else if (ShouldShowResourcePopup()) {
+			ResourceCalculator.Income currentIncome = room.GetTotalRoomIncome();
 
-		ResourceCalculator.Income currentIncome = room.GetTotalRoomIncome();
+			if (room.type == RoomType.Farm) {
+				popupSpriteRenderer.sprite = foodSprite;
+				popupText.text = UIController.GetFoodString(currentIncome.food);
+			} else if (room.type == RoomType.Power) {
+				popupSpriteRenderer.sprite = powerSprite;
+				popupText.text = UIController.GetPowerString(currentIncome.energy);
+			}
 
-		if (room.type == RoomType.Farm) {
-			popupSpriteRenderer.sprite = foodSprite;
-			popupText.text = UIController.GetFoodString(currentIncome.food);
-		} else if (room.type == RoomType.Power) {
-			popupSpriteRenderer.sprite = powerSprite;
-			popupText.text = UIController.GetPowerString(currentIncome.energy);
+			popupContainer.SetActive(true);
+			clearPopup.SetActive(true);
+		} else if (room.type == RoomType.Empty) {
+			buildFarmPopup.SetActive(true);
+			buildPowerPopup.SetActive(true);	
+		} else if (room.type == RoomType.Rubble) {
+			clearPopup.SetActive(true);
 		}
-
-		popupContainer.SetActive(true);
 	}
 
 	public void RedrawOnUnfocus() {
 		popupContainer.SetActive(false);
+		buildFarmPopup.SetActive(false);
+		buildPowerPopup.SetActive(false);
+		clearPopup.SetActive(false);
 	}
 
-	bool ShouldPopupShow() {
+	public void RedrawUI() {
+		RedrawOnUnfocus();
+		RedrawOnFocus();
+	}
+
+	bool ShouldShowResourcePopup() {
 		return (room.type == RoomType.Farm || room.type == RoomType.Power);
 	}
 }

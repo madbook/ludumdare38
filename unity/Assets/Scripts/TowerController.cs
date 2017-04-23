@@ -138,7 +138,7 @@ public class TowerController : MonoBehaviour {
 			if (Input.GetKeyDown("f")) {
 				this.focusedRoom.BuildFarm();
 			}
-			if (Input.GetKeyDown("c")) {
+			if (Input.GetKeyDown("r")) {
 				this.focusedRoom.Clear();
 			}
 			if (Input.GetKeyDown("w")) { //water

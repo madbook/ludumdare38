@@ -71,6 +71,12 @@ public class RoomController : MonoBehaviour {
 		}
 	}
 
+	public bool IsUnderConstruction {
+		get {
+			return assignment.assigned;
+		}
+	}
+
 	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
 
 	public System.Collections.IEnumerable IterOccupants {
@@ -130,7 +136,7 @@ public class RoomController : MonoBehaviour {
 				this.type = this.assignment.type;
 				// Job's done!
 				this.assignment.assigned = false;
-
+				RedrawUI();
 				if (this.type == RoomType.Empty) {
 					SetAllOccupantsToIdle();
 				} else {
@@ -169,6 +175,12 @@ public class RoomController : MonoBehaviour {
 		roomRenderer.Redraw();
 	}
 
+	void RedrawUI() {
+		if (focused) {
+			roomRenderer.RedrawUI();
+		}
+	}
+
 	void OnMouseDown() {
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		towerController.FocusRoom(floor, face, position);
@@ -197,11 +209,21 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void Build(RoomType type) {
-		if(this.CanBuild) {
+		Debug.Log("type! " + type);
+		if (this.CanBuild) {
 			Debug.Log("building " + type);
 			this.assignment = new Assignment(type, 0);
 			SetAllOccupantsToBuild();
+		} else if (this.assignment.assigned) {
+			// clear assigment?
+			Debug.Log("what do?");
+		} else if (type == RoomType.Empty) {
+			this.assignment = new Assignment(type, 0);
+			SetAllOccupantsToBuild();
+		} else {
+			Debug.Log("trying to build when can't build!");
 		}
+		RedrawUI();
 	}
 	
 	public bool CanBuild {
@@ -220,11 +242,6 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void Clear() {
-		if (this.assignment.assigned ) {
-			// clear assigment?
-		} else {
-			this.assignment = new Assignment(RoomType.Empty, 0);
-			SetAllOccupantsToBuild();
-		}
+		Build(RoomType.Empty);
 	}
 }
