@@ -50,11 +50,13 @@ public class TowerController : MonoBehaviour {
 			person.SetJobAssignment(JobAssignment.OperatingRoom);
 		}
 
+		FocusRoom(numFloors / 2, 0, numRoomsPerFloor / 2);
+
 		UpdateWorkerText();
 	}
 	
 	RoomController GetRoomByFloorFacePosition(int floor, int face, int position) {
-		Debug.Log(floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position);
+		// Debug.Log(floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position);
 		return rooms[floor * (numFaces * numRoomsPerFloor) + face * numRoomsPerFloor + position];
 	}
 
@@ -116,7 +118,7 @@ public class TowerController : MonoBehaviour {
 		}
 		room.FocusRoom();
 		this.focusedRoom = room;
-		Debug.Log("Workes: " + room.WorkerCount);
+		// Debug.Log("Workes: " + room.WorkerCount);
 		cameraController.FocusCameraOnPoint(room.gameObject.transform, room.face);
 	}
 
@@ -132,6 +134,37 @@ public class TowerController : MonoBehaviour {
 			}
 			if (Input.GetKeyDown("c")) {
 				this.focusedRoom.Clear();
+			}
+		}
+
+		if (focusedRoom != null) {
+			/* face, position
+						2,1 | 2,0
+				1,0						3,1
+				1,1						3,0
+						0,0 | 0,1
+			*/
+			int currentPosition = focusedRoom.position;
+			int currentFace = focusedRoom.face;
+			int currentFloor = focusedRoom.floor;
+			int hAxis = AxisInput.GetAxisDown("Horizontal");
+			int vAxis = AxisInput.GetAxisDown("Vertical");
+			
+			if (hAxis != 0) {
+				currentPosition += hAxis;
+				if (currentPosition < 0) {
+					currentPosition = numRoomsPerFloor - 1;
+					currentFace = (currentFace + 1) % numFaces;
+				} else if (currentPosition >= numRoomsPerFloor) {
+					currentPosition = 0;
+					currentFace = (currentFace + numFaces - 1) % numFaces;
+				}
+			}
+			if (vAxis != 0) {
+				currentFloor = (int) Mathf.Clamp(currentFloor + vAxis, 0, numFloors - 1);
+			}
+			if (hAxis != 0 || vAxis != 0) {
+				FocusRoom(currentFloor, currentFace, currentPosition);
 			}
 		}
 

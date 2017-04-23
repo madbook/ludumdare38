@@ -33,7 +33,7 @@ public class RoomController : MonoBehaviour {
 	
 	private float workerEfficiency = .001f;
 
-	public void Start() {
+	public void Awake() {
 		wiggler = GetComponent<Wiggler>();
 		this.incomeByType.Add(RoomType.Power, new ResourceCalculator.Income(0f, 1f));
 		this.incomeByType.Add(RoomType.Farm, new ResourceCalculator.Income(1f, -.25f));
@@ -172,13 +172,13 @@ public class RoomController : MonoBehaviour {
 	void OnMouseDown() {
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		towerController.FocusRoom(floor, face, position);
-		wiggler.Enable(new Vector3(.05f, .05f, .05f), 0.1f, 0.1f);
 		Redraw();
 	}
 
 	public void FocusRoom(){
-		this.focused = true;
-		this.Redraw();
+		focused = true;
+		wiggler.Enable(new Vector3(.05f, .05f, .05f), 0.1f, 0.1f);
+		Redraw();
 	}
 
 	public void UnFocusRoom(){

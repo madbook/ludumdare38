@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-	const float lerpDuration = 0.3f;
+	const float lerpDuration = 0.2f;
 	const float rotateEasing = 0.25f;
 	public float speed;
 	
@@ -33,8 +33,10 @@ public class CameraController : MonoBehaviour {
 		}
 
 		Vector3 movement = new Vector3(
-			Input.GetAxis("Horizontal"),
-			Input.GetAxis("Vertical"),
+			0f,
+			//Input.GetAxis("Horizontal"),
+			0f,
+			//Input.GetAxis("Vertical"),
 			Input.GetAxis("Zoom")
 		);
 		
@@ -64,7 +66,15 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+	public void CancelTransition() {
+		if (!lerping) { return; }
+		lerping = false;
+		transform.position = lerpTargetPosition;
+		transform.rotation = lerpTargetRotation;
+	}
+
 	public void FocusCameraOnPoint(Transform target, int rotate) {
+		CancelTransition();
 		Vector3 cameraPositionUnrotated = Quaternion.Inverse(transform.rotation) * transform.position;
 		Vector3 targetPositionUnrotated = Quaternion.Inverse(target.rotation) * target.position;
 
