@@ -184,10 +184,11 @@ public class TowerController : MonoBehaviour {
 		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
 			ResourceCalculator.Income income = ResourceCalculator.CalculateRoomIncome(rooms);
 			ResourceCalculator.Income expenses = ResourceCalculator.CalculatePeopleIncome(population);
+			income += expenses;
 			ResourceCalculator.stockpile += income;
-			ResourceCalculator.stockpile += expenses;
-			UpdateResourceText(income + expenses);
+			UpdateResourceText(income);
 
+			MusicController.UpdateMusics(this.musics, income, ResourceCalculator.stockpile);
 		}
 		elapsed += Time.deltaTime;
 
@@ -216,7 +217,7 @@ public class TowerController : MonoBehaviour {
 			workerIndex += 1;
 			vacancyIndex += 1;
 		}
-
+		//MusicController.FadeMusics(this.musics);
 		UpdateWorkerText();
 	}
 
