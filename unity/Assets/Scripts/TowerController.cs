@@ -50,7 +50,7 @@ public class TowerController : MonoBehaviour {
 			person.SetJobAssignment(JobAssignment.OperatingRoom);
 		}
 
-		FocusRoom(numFloors / 2, 0, numRoomsPerFloor / 2);
+		FocusRoom(0, 0, numRoomsPerFloor / 2);
 
 		UpdateWorkerText();
 	}

@@ -5,6 +5,7 @@ public class RoomRenderer : MonoBehaviour {
 	public GameObject roomModel;
 	public GameObject farmScene;
 	public GameObject rubbleScene;
+	public GameObject powerScene;
 
 	RoomController room;
 
@@ -45,6 +46,12 @@ public class RoomRenderer : MonoBehaviour {
 			rubbleScene.SetActive(true);
 		} else if (room.type != RoomType.Rubble && rubbleScene.activeSelf) {
 			rubbleScene.SetActive(false);
+		}
+
+		if (room.type == RoomType.Power && !powerScene.activeSelf) {
+			powerScene.SetActive(true);
+		} else if (room.type != RoomType.Power && powerScene.activeSelf) {
+			powerScene.SetActive(false);
 		}
 	}
 
