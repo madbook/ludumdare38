@@ -1,5 +1,6 @@
 
 public enum JobAssignment {
+	Dead,
 	// Person has no job
 	Idle,
 	// Person is in transit to a room, so not idle but not yet working
@@ -9,6 +10,7 @@ public enum JobAssignment {
 	// skill or something, or multiple jobs per room, but for now we can keep it
 	// simple
 	OperatingRoom,
+	BuildingRoom
 };
 
 public enum RoomType {

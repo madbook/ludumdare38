@@ -8,8 +8,8 @@ public class TowerController : MonoBehaviour {
 	public GameObject personTemplate;
 	public Text workerText;
 	public Text resourceText;
-	private int numFloors = 4;
-	private int numRoomsPerFloor = 3;
+	private int numFloors = 2;
+	private int numRoomsPerFloor = 1;
 	private int numFaces = 4;
 	public float hope = 0;
 	public float chaos = 0;
@@ -82,7 +82,12 @@ public class TowerController : MonoBehaviour {
 		List<RoomController> vacancies = new List<RoomController>();
 		foreach (RoomController room in rooms) {
 			if (room.IsRoomFull) { continue; }
-			if (room.type == RoomType.Empty || room.type == RoomType.Rubble) { continue; }
+			if ((room.type == RoomType.Empty || 
+				 room.type == RoomType.Rubble) &&
+				!room.assignment.assigned 
+				) {
+				 continue; 
+				}
 			int numVacancies = RoomController.maxRoomOccupancy - room.WorkerCount;
 			for (int i = 0; i < numVacancies; i++) {
 				vacancies.Add(room);
@@ -135,7 +140,7 @@ public class TowerController : MonoBehaviour {
 			PersonController person = idleWorkers[workerIndex];
 			RoomController room = vacancies[vacancyIndex];
 			PutPersonInRoom(person, room);
-			person.SetJobAssignment(JobAssignment.OperatingRoom);
+			person.SetJobAssignment(JobAssignment.Idle);
 			workerIndex += 1;
 			vacancyIndex += 1;
 		}
@@ -153,7 +158,7 @@ public class TowerController : MonoBehaviour {
 	}
 
 	void UpdateWorkerText() {
-		workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
+		//workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
 	}
 
 	void UpdateResourceText(ResourceCalculator.Income income) {

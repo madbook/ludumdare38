@@ -139,6 +139,7 @@ public class RoomController : MonoBehaviour {
 				if (this.type == RoomType.Empty) {
 					SetAllOccupantsToIdle();
 				} else {
+					Debug.Log("setting occupants to work because room is done building");
 					SetAllOccupantsToWork();
 				}
 			}
@@ -149,6 +150,14 @@ public class RoomController : MonoBehaviour {
 		foreach (PersonController person in roomOccupents) {
 			if (person.Job != JobAssignment.OperatingRoom) {
 				person.SetJobAssignment(JobAssignment.OperatingRoom);
+			}
+		}
+	}
+
+	void SetAllOccupantsToBuild() {
+		foreach (PersonController person in roomOccupents) {
+			if (person.Job != JobAssignment.BuildingRoom) {
+				person.SetJobAssignment(JobAssignment.BuildingRoom);
 			}
 		}
 	}
@@ -189,15 +198,18 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public void BuildPower() {
-		if(this.CanBuild) {
-			this.assignment = new Assignment(RoomType.Power, 0);
-		}
+		this.Build(RoomType.Power);
 	}
 
 	public void BuildFarm() {
+		this.Build(RoomType.Farm);
+	}
+
+	public void Build(RoomType type) {
 		if(this.CanBuild) {
-			Debug.Log("building farm");
-			this.assignment = new Assignment(RoomType.Farm, 0);
+			Debug.Log("building " + type);
+			this.assignment = new Assignment(type, 0);
+			SetAllOccupantsToBuild();
 		}
 	}
 	
@@ -218,6 +230,7 @@ public class RoomController : MonoBehaviour {
 			// clear assigment?
 		} else {
 			this.assignment = new Assignment(RoomType.Empty, 0);
+			SetAllOccupantsToBuild();
 		}
 	}
 }
