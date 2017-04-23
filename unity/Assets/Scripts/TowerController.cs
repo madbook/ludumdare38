@@ -21,6 +21,8 @@ public class TowerController : MonoBehaviour {
 	RoomController focusedRoom;
 	CameraController cameraController;
 
+	public AudioSource[] musics;
+
 	// Use this for initialization
 	void Start () {
 		cameraController = FindObjectOfType<CameraController>();
@@ -48,6 +50,10 @@ public class TowerController : MonoBehaviour {
 				continue;
 			}
 			person.SetJobAssignment(JobAssignment.OperatingRoom);
+		}
+
+		foreach (AudioSource music in musics ) {
+			music.Play();
 		}
 
 		FocusRoom(0, 0, numRoomsPerFloor / 2);
