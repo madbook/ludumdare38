@@ -8,6 +8,13 @@ public class RoomRenderer : MonoBehaviour {
 	public GameObject powerScene;
 	public GameObject constructionSprite;
 
+	public GameObject popupContainer;
+	public SpriteRenderer popupSpriteRenderer;
+	public TextMesh popupText;
+
+	public Sprite foodSprite;
+	public Sprite powerSprite;
+
 	RoomController room;
 
 	static Dictionary<RoomType, Color> roomColors = new Dictionary<RoomType, Color>();
@@ -62,6 +69,27 @@ public class RoomRenderer : MonoBehaviour {
 		}
 	}
 
-	public static void RedrawRoom(RoomController room, ColorKey key) {
+	public void RedrawOnFocus() {
+		if (!ShouldPopupShow()) { return; }
+
+		ResourceCalculator.Income currentIncome = room.GetTotalRoomIncome();
+
+		if (room.type == RoomType.Farm) {
+			popupSpriteRenderer.sprite = foodSprite;
+			popupText.text = UIController.GetFoodString(currentIncome.food);
+		} else if (room.type == RoomType.Power) {
+			popupSpriteRenderer.sprite = powerSprite;
+			popupText.text = UIController.GetPowerString(currentIncome.energy);
+		}
+
+		popupContainer.SetActive(true);
+	}
+
+	public void RedrawOnUnfocus() {
+		popupContainer.SetActive(false);
+	}
+
+	bool ShouldPopupShow() {
+		return (room.type == RoomType.Farm || room.type == RoomType.Power);
 	}
 }

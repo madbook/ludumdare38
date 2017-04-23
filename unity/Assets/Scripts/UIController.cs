@@ -11,10 +11,18 @@ public class UIController : MonoBehaviour {
 	}
 
 	public void UpdatePowerText (float power) {
-		powerText.text = ((int) (power * 100)).ToString();
+		powerText.text = GetPowerString(power);
 	}
 
 	public void UpdateFoodText (float food) {
-		foodText.text = ((int) (food * 100)).ToString();
+		foodText.text = GetFoodString(food);
+	}
+
+	public static string GetPowerString (float power) {
+		return ((int) (power * 100)).ToString();
+	}
+
+	public static string GetFoodString (float food) {
+		return ((int) (food * 100)).ToString();
 	}
 }

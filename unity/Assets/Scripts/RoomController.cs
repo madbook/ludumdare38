@@ -179,11 +179,13 @@ public class RoomController : MonoBehaviour {
 		focused = true;
 		wiggler.Enable(new Vector3(.05f, .05f, .05f), 0.1f, 0.1f);
 		Redraw();
+		roomRenderer.RedrawOnFocus();
 	}
 
 	public void UnFocusRoom(){
 		this.focused = false;
 		this.Redraw();
+		roomRenderer.RedrawOnUnfocus();
 	}
 
 	public void BuildPower() {
@@ -210,6 +212,11 @@ public class RoomController : MonoBehaviour {
 
 	public ResourceCalculator.Income GetIncome(int filters, int converters) {
 		return this.incomeByType[this.type];
+	}
+
+	public ResourceCalculator.Income GetTotalRoomIncome() {
+		// TODO david - get the real production value of the room
+		return GetIncome(0, 0);
 	}
 
 	public void Clear() {
