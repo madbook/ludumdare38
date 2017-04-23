@@ -51,11 +51,17 @@ public class RoomController : MonoBehaviour {
 		this.roomColors.Add(new ColorKey(RoomType.Farm, false),  new Color (0f,.8f,0f,0f));
 		this.roomColors.Add(new ColorKey(RoomType.Rubble, false),  new Color (.1f,.1f,.1f,0f));
 		this.roomColors.Add(new ColorKey(RoomType.Empty, false),  new Color (.5f,.5f,.5f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Filtration, true),  new Color (.1f,.1f,.7f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Filtration, false),  new Color (0f,0f,.5f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Converter, true),  new Color (1f,.5f,0f,0f));
+		this.roomColors.Add(new ColorKey(RoomType.Converter, false),  new Color (.8f,.2f,0f,0f));
 
-		this.incomeByType.Add(RoomType.power, new ResourceCalculator.Income(0f, 1f));
-		this.incomeByType.Add(RoomType.farm, new ResourceCalculator.Income(1f, -.25f));
-		this.incomeByType.Add(RoomType.rubble, new ResourceCalculator.Income(0f, 0f));
-		this.incomeByType.Add(RoomType.empty, new ResourceCalculator.Income(0f, -.05f));
+		this.incomeByType.Add(RoomType.Power, new ResourceCalculator.Income(0f, 1f));
+		this.incomeByType.Add(RoomType.Farm, new ResourceCalculator.Income(1f, -.25f));
+		this.incomeByType.Add(RoomType.Rubble, new ResourceCalculator.Income(0f, 0f));
+		this.incomeByType.Add(RoomType.Empty, new ResourceCalculator.Income(0f, -.05f));
+		this.incomeByType.Add(RoomType.Filtration, new ResourceCalculator.Income(0.5f, -.05f));
+		this.incomeByType.Add(RoomType.Converter, new ResourceCalculator.Income(0f, .5f));
 	}
 
 

@@ -65,6 +65,10 @@ public static class TowerSetup {
 						roomController.type = RoomType.Farm;
 					} else if (typeRoll<60) {
 						roomController.type = RoomType.Power;
+					} else if (typeRoll<65) {
+						roomController.type = RoomType.Filtration;
+					} else if (typeRoll<70) {
+						roomController.type = RoomType.Converter;
 					} else {
 						roomController.type = RoomType.Rubble;
 					}

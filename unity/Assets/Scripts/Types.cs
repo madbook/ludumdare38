@@ -16,4 +16,6 @@ public enum RoomType {
 	Power,
 	Farm,
 	Rubble,
+	Converter,
+	Filtration
 };

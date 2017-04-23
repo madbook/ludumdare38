@@ -7,9 +7,9 @@ public class TowerController : MonoBehaviour {
 	public GameObject roomTemplate;
 	public GameObject personTemplate;
 	public Text workerText;
-	public int numFloors = 4;
-	public int numRoomsPerFloor = 3;
-	public int numFaces = 4;
+	private int numFloors = 4;
+	private int numRoomsPerFloor = 3;
+	private int numFaces = 4;
 	public float hope = 0;
 	public float chaos = 0;
 	public int numStartingPopulation = 10;
