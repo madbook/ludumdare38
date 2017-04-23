@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class TowerController : MonoBehaviour {
 
 	public GameObject roomTemplate;
 	public GameObject personTemplate;
-	public Text workerText;
-	public Text resourceText;
 	private int numFloors = 5;
 	private int numRoomsPerFloor = 2;
 	private int numFaces = 4;
@@ -20,11 +17,13 @@ public class TowerController : MonoBehaviour {
 	PersonController[] population;
 	RoomController focusedRoom;
 	CameraController cameraController;
+	UIController uiController;
 
 	public AudioSource[] musics;
 
 	// Use this for initialization
 	void Start () {
+		uiController = GetComponent<UIController>();
 		cameraController = FindObjectOfType<CameraController>();
 		rooms = TowerSetup.CreateTower(
 			numFloors,
@@ -231,11 +230,14 @@ public class TowerController : MonoBehaviour {
 	}
 
 	void UpdateWorkerText() {
-		workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
+		uiController.UpdateWorkerText(population.Length);
+		// workerText.text = IdleWorkerCount.ToString() + " / " + population.Length.ToString();
 	}
 
 	void UpdateResourceText(ResourceCalculator.Income income) {
-		resourceText.text = "Food Income: " + income.food + " Energy Income: " + income.energy;
+		uiController.UpdateFoodText(income.food);
+		uiController.UpdatePowerText(income.energy);
+		// resourceText.text = "Food Income: " + income.food + " Energy Income: " + income.energy;
 	}
 
 	void shuffleRooms(List<RoomController> rooms)
