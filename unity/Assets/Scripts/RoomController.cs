@@ -94,8 +94,14 @@ public class RoomController : MonoBehaviour {
 				if (personPositions.Length >= i) {
 					/*Debug.Log(person);
 					Debug.Log(person.gameObject);
-					Debug.Log(person.gameObject.transform);*/
+					Debug.Log(person.gameObject.transform);
 					person.gameObject.transform.localPosition = new Vector3(
+						personPositions[i].x,
+						personYOffset,
+						personPositions[i].y
+					);*/
+					person.walkingProgress = 0;
+					person.targetPosition = new Vector3(
 						personPositions[i].x,
 						personYOffset,
 						personPositions[i].y

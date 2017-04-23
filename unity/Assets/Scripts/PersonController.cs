@@ -21,18 +21,21 @@ public class PersonController : MonoBehaviour {
 		this.currentRoom = currentRoom;
 	}
 
+	public Vector3 targetPosition;
+
 	public void Start () {
 		this.job = JobAssignment.Idle;
+		walkingProgress =0;
 	}
 
 	public bool Bored {
 		get {
 			bool bored;
-			int rand = Random.Range(0,1000);
+			int rand = Random.Range(0,10000);
 
 			switch (this.job) {
 				case JobAssignment.Idle:
-					bored = (rand <= 100);
+					bored = (rand <= 1000);
 					break;
 				case JobAssignment.GoingToRoom:
 					bored = false;
@@ -55,4 +58,25 @@ public class PersonController : MonoBehaviour {
 			return bored;
 		}
 	}
+
+	public float walkingProgress;
+	//door position = (0, .5);
+
+	public void Update() {
+
+		if(walkingProgress<1) {
+			walkingProgress+= Time.deltaTime/2;
+		}
+		
+
+
+
+		this.gameObject.transform.localPosition = new Vector3(
+				walkingProgress*(targetPosition.x),
+				targetPosition.y,
+				walkingProgress*targetPosition.z
+			);
+	} 
+
+	
 }
