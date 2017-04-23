@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
 public class PersonController : MonoBehaviour {
-	private JobAssignment job = JobAssignment.Idle;
+	Wiggler wiggler;	
+	JobAssignment job = JobAssignment.Idle;
 	RoomController currentRoom;
+
 	public int currentPosition;
 
 	public RoomController CurrentRoom {
@@ -19,10 +21,12 @@ public class PersonController : MonoBehaviour {
 
 	public void SetCurrentRoom(RoomController currentRoom) {
 		this.currentRoom = currentRoom;
+		wiggler.Enable(new Vector3(0f, 0.1f, 0f), 0.1f);
 	}
 
-	public void Start () {
-		this.job = JobAssignment.Idle;
+	public void Awake () {
+		job = JobAssignment.Idle;
+		wiggler = GetComponent<Wiggler>();
 	}
 
 	public bool Bored {

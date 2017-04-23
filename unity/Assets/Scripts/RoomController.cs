@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class RoomController : MonoBehaviour {
 	public const int maxRoomOccupancy = 4;
 
+	Wiggler wiggler;
+
 	public TowerController towerController;
 	public GameObject roomModel;
 	public int floor;
@@ -32,6 +34,7 @@ public class RoomController : MonoBehaviour {
 	private float workerEfficiency = .001f;
 
 	public void Start() {
+		wiggler = GetComponent<Wiggler>();
 		this.incomeByType.Add(RoomType.Power, new ResourceCalculator.Income(0f, 1f));
 		this.incomeByType.Add(RoomType.Farm, new ResourceCalculator.Income(1f, -.25f));
 		this.incomeByType.Add(RoomType.Rubble, new ResourceCalculator.Income(0f, 0f));
@@ -168,8 +171,9 @@ public class RoomController : MonoBehaviour {
 
 	void OnMouseDown() {
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
-		this.towerController.FocusRoom(floor, face, position);
-		this.Redraw();
+		towerController.FocusRoom(floor, face, position);
+		wiggler.Enable(new Vector3(.05f, .05f, .05f), 0.1f, 0.1f);
+		Redraw();
 	}
 
 	public void FocusRoom(){
