@@ -52,6 +52,7 @@ public class TowerController : MonoBehaviour {
 
 		FocusRoom(0, 0, numRoomsPerFloor / 2);
 
+		ResourceCalculator.stockpile = new ResourceCalculator.Income(0,0);
 		UpdateWorkerText();
 	}
 	
@@ -135,6 +136,12 @@ public class TowerController : MonoBehaviour {
 			if (Input.GetKeyDown("c")) {
 				this.focusedRoom.Clear();
 			}
+			if (Input.GetKeyDown("w")) { //water
+				this.focusedRoom.Build(RoomType.Filtration);
+			}
+			if (Input.GetKeyDown("v")) {
+				this.focusedRoom.Build(RoomType.Converter);
+			}
 		}
 
 		if (focusedRoom != null) {
@@ -169,8 +176,12 @@ public class TowerController : MonoBehaviour {
 		}
 
 		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
-			ResourceCalculator.Income income = ResourceCalculator.CalculateIncome(rooms);
-			UpdateResourceText(income);
+			ResourceCalculator.Income income = ResourceCalculator.CalculateRoomIncome(rooms);
+			ResourceCalculator.Income expenses = ResourceCalculator.CalculatePeopleIncome(population);
+			ResourceCalculator.stockpile += income;
+			ResourceCalculator.stockpile += expenses;
+			UpdateResourceText(income + expenses);
+
 		}
 		elapsed += Time.deltaTime;
 
@@ -217,7 +228,7 @@ public class TowerController : MonoBehaviour {
 	}
 
 	void UpdateResourceText(ResourceCalculator.Income income) {
-		resourceText.text = "Food: " + income.food + " Energy: " + income.energy;
+		resourceText.text = "Food Income: " + income.food + " Energy Income: " + income.energy;
 	}
 
 	void shuffleRooms(List<RoomController> rooms)

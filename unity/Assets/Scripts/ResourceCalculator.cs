@@ -12,13 +12,33 @@
 		}
 	}
 
-	public static Income CalculateIncome(RoomController[] rooms){
+	public static Income stockpile;
+
+	public static Income CalculateRoomIncome(RoomController[] rooms){
 		Income totalIncome = new Income(0,0);
 
+		int filters = 0;
+		int converters = 0;
 		foreach (RoomController room in rooms) {
-			totalIncome += room.Income;
+			if(room.type == RoomType.Filtration && room.WorkerCount > 0){
+				filters++;
+			}
+			if(room.type == RoomType.Converter && room.WorkerCount > 0){
+				converters++;
+			}
 		}
-		// Debug.Log("Food: " + totalIncome.food + " Energy: " + totalIncome.energy);
+
+		foreach (RoomController room in rooms) {
+			totalIncome += room.GetIncome(filters, converters);
+		}
+		return totalIncome;
+	}
+
+	public static Income CalculatePeopleIncome(PersonController[] people){
+		Income totalIncome = new Income(0,0);
+		foreach (PersonController peop in people) {
+			totalIncome += new Income(-0.25f,0);
+		}
 		return totalIncome;
 	}
 }

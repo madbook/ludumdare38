@@ -208,11 +208,8 @@ public class RoomController : MonoBehaviour {
 		}
 	}
 
-	public ResourceCalculator.Income Income {
-		get {
-			//Debug.Log(this.type);
-			return this.incomeByType[this.type];
-		}
+	public ResourceCalculator.Income GetIncome(int filters, int converters) {
+		return this.incomeByType[this.type];
 	}
 
 	public void Clear() {

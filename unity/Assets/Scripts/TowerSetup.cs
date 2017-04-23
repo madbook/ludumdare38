@@ -99,10 +99,10 @@ public static class TowerSetup {
 						roomController.type = RoomType.Empty;
 					}
 
-					if (y == 0 & r == 0 && y == 0) {
+					if (y == 0 & r == 0 && x == 0) {
 						roomController.type = RoomType.Farm;
 					}
-					if (y == 0 & r == 1 && y == 0) {
+					if (y == 0 & r == 1 && x == 0) {
 						roomController.type = RoomType.Power;
 					}
 					
