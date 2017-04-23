@@ -69,6 +69,16 @@ public class RoomController : MonoBehaviour {
 
 	PersonController[] roomOccupents = new PersonController[maxRoomOccupancy];
 
+	public System.Collections.IEnumerable IterOccupants {
+		get {
+			foreach (PersonController person in roomOccupents) {
+				if (person != null) {
+					yield return person;
+				}
+			}
+		}
+	}
+
 	public float GetWorkforce {
 		get {
 			// TODO: different workers work different speeds.
@@ -128,7 +138,7 @@ public class RoomController : MonoBehaviour {
 	}
 
 	void SetAllOccupantsToWork() {
-		foreach (PersonController person in roomOccupents) {
+		foreach (PersonController person in IterOccupants) {
 			if (person.Job != JobAssignment.OperatingRoom) {
 				person.SetJobAssignment(JobAssignment.OperatingRoom);
 			}
@@ -136,7 +146,7 @@ public class RoomController : MonoBehaviour {
 	}
 
 	void SetAllOccupantsToBuild() {
-		foreach (PersonController person in roomOccupents) {
+		foreach (PersonController person in IterOccupants) {
 			if (person.Job != JobAssignment.BuildingRoom) {
 				person.SetJobAssignment(JobAssignment.BuildingRoom);
 			}
@@ -144,7 +154,7 @@ public class RoomController : MonoBehaviour {
 	}
 
 	void SetAllOccupantsToIdle() {
-		foreach (PersonController person in roomOccupents) {
+		foreach (PersonController person in IterOccupants) {
 			if (person.Job != JobAssignment.Idle) {
 				person.SetJobAssignment(JobAssignment.Idle);
 			}

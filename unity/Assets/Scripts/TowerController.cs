@@ -8,7 +8,7 @@ public class TowerController : MonoBehaviour {
 	public GameObject personTemplate;
 	public Text workerText;
 	public Text resourceText;
-	private int numFloors = 2;
+	private int numFloors = 5;
 	private int numRoomsPerFloor = 1;
 	private int numFaces = 4;
 	public float hope = 0;
