@@ -32,7 +32,6 @@ public class MusicController {
 			music.volume = silent;
 			music.Play();
 		}
-		Debug.Log ("MUSIC CONTROLLER STARTED ###########");
 	}
 
 	public static void UpdateMusics(AudioSource[] musics, ResourceCalculator.Income income, ResourceCalculator.Income stockpile, RoomController[] rooms) {
@@ -84,7 +83,6 @@ public class MusicController {
 		} else {
 
 		}
-		Debug.Log("hopeful:" + very_loud * ((float)highestCleared / (float)i) + " " + highestCleared + " " + i);
 		musics[hopeful_synth].volume = very_loud * ((float)highestCleared / (float)i) - quiet;
 
 	}
