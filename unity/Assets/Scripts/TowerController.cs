@@ -147,6 +147,9 @@ public class TowerController : MonoBehaviour {
 			if (Input.GetKeyDown("v")) {
 				this.focusedRoom.Build(RoomType.Converter);
 			}
+			if (Input.GetKeyDown("h")) {
+				this.focusedRoom.Build(RoomType.Hospital);
+			}
 		}
 
 		if (focusedRoom != null) {

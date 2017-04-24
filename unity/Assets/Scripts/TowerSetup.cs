@@ -63,34 +63,6 @@ public static class TowerSetup {
                     roomController.face = r;
                     roomController.position = x;
 
-					/*
-                    int typeRoll = Random.Range(0, 100);
-                    if (typeRoll < 50)
-                    {
-                        roomController.type = RoomType.Empty;
-                    }
-                    else if (typeRoll < 55)
-                    {
-                        roomController.type = RoomType.Farm;
-                    }
-                    else if (typeRoll < 60)
-                    {
-                        roomController.type = RoomType.Power;
-                    }
-                    else if (typeRoll < 65)
-                    {
-                        roomController.type = RoomType.Filtration;
-                    }
-                    else if (typeRoll < 70)
-                    {
-                        roomController.type = RoomType.Converter;
-                    }
-                    else
-                    {
-                        roomController.type = RoomType.Rubble;
-                    }
-					 */
-
                     int typeRoll = Random.Range(0, 100);
 
 					if(typeRoll - 50*y < 0) {
