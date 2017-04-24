@@ -75,7 +75,7 @@ public static class TowerSetup {
 						roomController.type = RoomType.Farm;
 					}
 					if (y == 0 & r == 1 && x == 0) {
-						roomController.type = RoomType.Power;
+						//roomController.type = RoomType.Power; // The music is cooler if you start in a power deficit
 					}
 					
                     rooms[i] = roomController;

@@ -51,13 +51,12 @@ public class TowerController : MonoBehaviour {
 			person.SetJobAssignment(JobAssignment.OperatingRoom);
 		}
 
-		foreach (AudioSource music in musics ) {
-			music.Play();
-		}
+		MusicController.Start(musics);
 
 		FocusRoom(0, 0, numRoomsPerFloor / 2);
 
 		ResourceCalculator.stockpile = new ResourceCalculator.Income(0,0);
+		IncomeTick();
 		UpdateWorkerText();
 	}
 	
@@ -184,13 +183,7 @@ public class TowerController : MonoBehaviour {
 		}
 
 		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
-			ResourceCalculator.Income income = ResourceCalculator.CalculateRoomIncome(rooms);
-			ResourceCalculator.Income expenses = ResourceCalculator.CalculatePeopleIncome(population);
-			income += expenses;
-			ResourceCalculator.stockpile += income;
-			UpdateResourceText(income);
-
-			MusicController.UpdateMusics(this.musics, income, ResourceCalculator.stockpile);
+			IncomeTick();
 		}
 		elapsed += Time.deltaTime;
 
@@ -221,6 +214,16 @@ public class TowerController : MonoBehaviour {
 		}
 		//MusicController.FadeMusics(this.musics);
 		UpdateWorkerText();
+	}
+
+	public void IncomeTick() {
+		ResourceCalculator.Income income = ResourceCalculator.CalculateRoomIncome(rooms);
+		ResourceCalculator.Income expenses = ResourceCalculator.CalculatePeopleIncome(population);
+		income += expenses;
+		ResourceCalculator.stockpile += income;
+		UpdateResourceText(income);
+
+		MusicController.UpdateMusics(this.musics, income, ResourceCalculator.stockpile, rooms);
 	}
 
 	public void PutPersonInRoom(PersonController person, RoomController room) {

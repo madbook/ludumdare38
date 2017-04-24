@@ -19,6 +19,7 @@
 
 		int filters = 0;
 		int converters = 0;
+		
 		foreach (RoomController room in rooms) {
 			if(room.type == RoomType.Filtration && room.WorkerCount > 0){
 				filters++;
