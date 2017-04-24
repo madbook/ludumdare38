@@ -136,12 +136,18 @@ public class RoomController : MonoBehaviour {
 		if (this.assignment.assigned) {
 			this.assignment.progress += this.GetWorkforce;
 			if(this.assignment.progress > 1) {
+				RoomType oldType = this.type;
 				this.type = this.assignment.type;
 				// Job's done!
 				this.assignment.assigned = false;
 				RedrawUI();
 				if (this.type == RoomType.Empty) {
-					SetAllOccupantsToIdle();
+					if(Random.Range(0,10)==0 && oldType == RoomType.Rubble){ 
+						this.type = RoomType.Hospital;
+						SetAllOccupantsToWork();
+					} else {
+						SetAllOccupantsToIdle();
+					}
 				} else {
 					Debug.Log("setting occupants to work because room is done building");
 					SetAllOccupantsToWork();
