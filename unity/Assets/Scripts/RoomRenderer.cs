@@ -3,9 +3,14 @@ using System.Collections.Generic;
 
 public class RoomRenderer : MonoBehaviour {
 	public GameObject roomModel;
-	public GameObject farmScene;
+	public GameObject emptyScene;
 	public GameObject rubbleScene;
+	public GameObject farmScene;
 	public GameObject powerScene;
+	public GameObject converterScene;
+	public GameObject filtrationScene;
+	public GameObject hospitalScene;
+
 	public GameObject constructionSprite;
 
 	public GameObject popupContainer;
@@ -53,9 +58,14 @@ public class RoomRenderer : MonoBehaviour {
 			}
 		}
 
-		SetSceneState(room.type ==RoomType.Farm, farmScene);
-		SetSceneState(room.type ==RoomType.Rubble, rubbleScene);
-		SetSceneState(room.type ==RoomType.Power, powerScene);
+		SetSceneState(room.type == RoomType.Empty, emptyScene);
+		SetSceneState(room.type == RoomType.Rubble, rubbleScene);
+		SetSceneState(room.type == RoomType.Farm, farmScene);
+		SetSceneState(room.type == RoomType.Power, powerScene);
+		SetSceneState(room.type == RoomType.Converter, converterScene);
+		SetSceneState(room.type == RoomType.Filtration, filtrationScene);
+		SetSceneState(room.type == RoomType.Hospital, hospitalScene);
+
 		SetSceneState(room.IsUnderConstruction, constructionSprite);
 	}
 
