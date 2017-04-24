@@ -37,7 +37,7 @@ public class MusicController {
 
 	public static void UpdateMusics(AudioSource[] musics, ResourceCalculator.Income income, ResourceCalculator.Income stockpile, RoomController[] rooms) {
 		if(income.food > 0) {
-			musics[solo_synth].volume = loud;
+			musics[solo_synth].volume = quiet;
 		} else {
 			musics[solo_synth].volume = silent;
 		}
