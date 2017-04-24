@@ -141,7 +141,7 @@ public class TowerController : MonoBehaviour {
 			if (Input.GetKeyDown("r")) {
 				this.focusedRoom.Clear();
 			}
-			if (Input.GetKeyDown("w")) { //water
+			if (Input.GetKeyDown("l")) { //water
 				this.focusedRoom.Build(RoomType.Filtration);
 			}
 			if (Input.GetKeyDown("v")) {
