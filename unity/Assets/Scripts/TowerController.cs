@@ -181,10 +181,10 @@ public class TowerController : MonoBehaviour {
 				FocusRoom(currentFloor, currentFace, currentPosition);
 			}
 		}
-
-		if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
+		IncomeTick(); // more responsive music.
+		/*if (Mathf.Floor(elapsed + Time.deltaTime) > Mathf.Floor(elapsed)) {
 			IncomeTick();
-		}
+		}*/
 		elapsed += Time.deltaTime;
 
 		List<PersonController> idleWorkers = GetBoredWorkers();
