@@ -35,6 +35,7 @@ public class RoomRenderer : MonoBehaviour {
 		roomColors.Add(RoomType.Empty, new Color(.5f,.5f,.5f,0f));
 		roomColors.Add(RoomType.Filtration, new Color(0f,0f,.5f,0f));
 		roomColors.Add(RoomType.Converter, new Color(.8f,.2f,0f,0f));
+		roomColors.Add(RoomType.Hospital, new Color(.8f,.6f,.6f,0f));
 	}
 
 	void Awake() {

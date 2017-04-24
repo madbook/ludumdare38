@@ -42,6 +42,7 @@ public class RoomController : MonoBehaviour {
 		this.incomeByType.Add(RoomType.Empty, new ResourceCalculator.Income(0f, -.05f));
 		this.incomeByType.Add(RoomType.Filtration, new ResourceCalculator.Income(0.5f, -.05f));
 		this.incomeByType.Add(RoomType.Converter, new ResourceCalculator.Income(0f, .5f));
+		this.incomeByType.Add(RoomType.Hospital, new ResourceCalculator.Income(0f, -.05f));
 	}
 
 
@@ -184,6 +185,7 @@ public class RoomController : MonoBehaviour {
 	void OnMouseDown() {
 		Debug.Log(this.floor + ", " + this.face + ", " + this.position + ", " + this.type);
 		towerController.FocusRoom(floor, face, position);
+		Debug.Log("Distance to 0,0,0 " + DistanceCalculator.DistanceBetween(new DistanceCalculator.Location(floor, face, position),new DistanceCalculator.Location(0,0,0)));
 		Redraw();
 	}
 

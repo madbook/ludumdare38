@@ -19,7 +19,8 @@ public enum RoomType {
 	Farm,
 	Rubble,
 	Converter,
-	Filtration
+	Filtration,
+	Hospital
 };
 
 public struct ColorKey {
