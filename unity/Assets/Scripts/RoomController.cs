@@ -31,6 +31,8 @@ public class RoomController : MonoBehaviour {
 
 	public bool focused;
 	
+	private ResourceCalculator.Income cachedIncome;
+
 	private float workerEfficiency = .001f;
 
 	public void Awake() {
@@ -41,7 +43,7 @@ public class RoomController : MonoBehaviour {
 		this.incomeByType.Add(RoomType.Rubble, new ResourceCalculator.Income(0f, 0f));
 		this.incomeByType.Add(RoomType.Empty, new ResourceCalculator.Income(0f, -.05f));
 		this.incomeByType.Add(RoomType.Filtration, new ResourceCalculator.Income(0.5f, -.05f));
-		this.incomeByType.Add(RoomType.Converter, new ResourceCalculator.Income(0f, .5f));
+		this.incomeByType.Add(RoomType.Converter, new ResourceCalculator.Income(0f, 0f));
 		this.incomeByType.Add(RoomType.Hospital, new ResourceCalculator.Income(0f, -.05f));
 	}
 
@@ -235,12 +237,20 @@ public class RoomController : MonoBehaviour {
 	}
 
 	public ResourceCalculator.Income GetIncome(int filters, int converters) {
-		return this.incomeByType[this.type];
+		ResourceCalculator.Income currentIncome = this.incomeByType[this.type];
+		if(converters > 0  && currentIncome.energy > 0) {
+			currentIncome.energy = currentIncome.energy * 1.5f;
+		}
+		if(filters > 0  && currentIncome.food > 0) {
+			currentIncome.food = currentIncome.food * 1.5f;
+		}
+		this.cachedIncome = currentIncome;
+		return currentIncome;
 	}
 
 	public ResourceCalculator.Income GetTotalRoomIncome() {
 		// TODO david - get the real production value of the room
-		return GetIncome(0, 0);
+		return this.cachedIncome;
 	}
 
 	public void Clear() {

@@ -91,10 +91,10 @@ public class RoomRenderer : MonoBehaviour {
 				popupText.text = UIController.GetPowerString(currentIncome.energy);
 			} else if (room.type == RoomType.Converter) {
 				popupSpriteRenderer.sprite = converterSprite;
-				popupText.text = "+???";
+				popupText.text = "x1.5";
 			} else if (room.type == RoomType.Filtration) {
 				popupSpriteRenderer.sprite = filtrationSprite;
-				popupText.text = "+???";
+				popupText.text = "x1.5";
 			}
 
 			popupContainer.SetActive(true);
