@@ -14,9 +14,13 @@ public class RoomRenderer : MonoBehaviour {
 
 	public Sprite foodSprite;
 	public Sprite powerSprite;
+	public Sprite filtrationSprite;
+	public Sprite converterSprite;
 
 	public GameObject buildFarmPopup;
 	public GameObject buildPowerPopup;
+	public GameObject buildFiltrationPopup;
+	public GameObject buildConverterPopup;
 	public GameObject clearPopup;
 
 	RoomController room;
@@ -48,28 +52,17 @@ public class RoomRenderer : MonoBehaviour {
 			}
 		}
 
-		if (room.type == RoomType.Farm && !farmScene.activeSelf) {
-			farmScene.SetActive(true);
-		} else if (room.type != RoomType.Farm && farmScene.activeSelf) {
-			farmScene.SetActive(false);
-		}
+		SetSceneState(room.type ==RoomType.Farm, farmScene);
+		SetSceneState(room.type ==RoomType.Rubble, rubbleScene);
+		SetSceneState(room.type ==RoomType.Power, powerScene);
+		SetSceneState(room.IsUnderConstruction, constructionSprite);
+	}
 
-		if (room.type == RoomType.Rubble && !rubbleScene.activeSelf) {
-			rubbleScene.SetActive(true);
-		} else if (room.type != RoomType.Rubble && rubbleScene.activeSelf) {
-			rubbleScene.SetActive(false);
-		}
-
-		if (room.type == RoomType.Power && !powerScene.activeSelf) {
-			powerScene.SetActive(true);
-		} else if (room.type != RoomType.Power && powerScene.activeSelf) {
-			powerScene.SetActive(false);
-		}
-
-		if (room.IsUnderConstruction && !constructionSprite.activeSelf) {
-			constructionSprite.SetActive(true);
-		} else if (!room.IsUnderConstruction && constructionSprite.activeSelf) {
-			constructionSprite.SetActive(false);
+	void SetSceneState(bool enable, GameObject scene) {
+		if (enable && !scene.activeSelf) {
+			scene.SetActive(true);
+		} else if (!enable && scene.activeSelf) {
+			scene.SetActive(false);
 		}
 	}
 
@@ -85,14 +78,22 @@ public class RoomRenderer : MonoBehaviour {
 			} else if (room.type == RoomType.Power) {
 				popupSpriteRenderer.sprite = powerSprite;
 				popupText.text = UIController.GetPowerString(currentIncome.energy);
+			} else if (room.type == RoomType.Converter) {
+				popupSpriteRenderer.sprite = converterSprite;
+				popupText.text = "+???";
+			} else if (room.type == RoomType.Filtration) {
+				popupSpriteRenderer.sprite = filtrationSprite;
+				popupText.text = "+???";
 			}
 
 			popupContainer.SetActive(true);
 			clearPopup.SetActive(true);
 		} else if (room.type == RoomType.Empty) {
 			buildFarmPopup.SetActive(true);
-			buildPowerPopup.SetActive(true);	
-		} else if (room.type == RoomType.Rubble) {
+			buildPowerPopup.SetActive(true);
+			buildConverterPopup.SetActive(true);
+			buildFiltrationPopup.SetActive(true);
+		} else {
 			clearPopup.SetActive(true);
 		}
 	}
@@ -101,6 +102,8 @@ public class RoomRenderer : MonoBehaviour {
 		popupContainer.SetActive(false);
 		buildFarmPopup.SetActive(false);
 		buildPowerPopup.SetActive(false);
+		buildConverterPopup.SetActive(false);
+		buildFiltrationPopup.SetActive(false);
 		clearPopup.SetActive(false);
 	}
 
@@ -110,6 +113,6 @@ public class RoomRenderer : MonoBehaviour {
 	}
 
 	bool ShouldShowResourcePopup() {
-		return (room.type == RoomType.Farm || room.type == RoomType.Power);
+		return (room.type != RoomType.Empty && room.type != RoomType.Rubble);
 	}
 }
