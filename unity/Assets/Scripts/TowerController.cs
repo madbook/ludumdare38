@@ -5,9 +5,9 @@ public class TowerController : MonoBehaviour {
 
 	public GameObject roomTemplate;
 	public GameObject personTemplate;
-	private int numFloors = 5;
-	private int numRoomsPerFloor = 2;
-	private int numFaces = 4;
+	public static int numFloors = 5;
+	public static int numRoomsPerFloor = 2;
+	public static int numFaces = 4;
 	public float hope = 0;
 	public float chaos = 0;
 	public int numStartingPopulation = 10;
