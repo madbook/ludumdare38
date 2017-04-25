@@ -142,7 +142,7 @@ public class RoomController : MonoBehaviour {
 				this.assignment.assigned = false;
 				RedrawUI();
 				if (this.type == RoomType.Empty) {
-					if(Random.Range(0,10)==0 && oldType == RoomType.Rubble){ 
+					if(Random.Range(0,5)==0 && oldType == RoomType.Rubble){ 
 						this.type = RoomType.Hospital;
 						SetAllOccupantsToWork();
 					} else {
